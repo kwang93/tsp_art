@@ -24,6 +24,7 @@ def get_path(points):
         p1 = points[paths[path]]
         lines.append((p0, p1))
         p0 = p1
+    # print(len(lines))
     return lines
 
 
@@ -44,6 +45,7 @@ def connect_points(image):
                 points.append((x, y))
 
     print("There are", len(points), "stipples to connect")
+    print(len(points))
     # get path
     path = get_path(points)
     # draw lines, free up space and return image
@@ -51,6 +53,6 @@ def connect_points(image):
     for pair in path:
         p1 = pair[0]
         p2 = pair[1]
-        draw.line((p1, p2), fill=shaded_pixel, width=1)
+        draw.line((p1, p2), fill=shaded_pixel, width=3)
     del draw
     return image

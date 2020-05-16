@@ -67,7 +67,7 @@ def compute_centroids(centroids, centroid_sums, width, height):
     return centroid_delta
 
 
-# increase size of image to show whitespace better and draw final output_marv
+# increase size of image to show whitespace better and draw final output
 def magnify_and_draw_points(points, width, height, stipple_mult):
     points = list(points)
     # get magnified image size and create blank canvas
@@ -83,19 +83,18 @@ def magnify_and_draw_points(points, width, height, stipple_mult):
 
 
 # compute the weighted voronoi stippling for an image
-def main_voronoi(image):
+def main_voronoi(image, stipple_mult = 4, convergence = 5, color = True):
 
     # used to add more stipples for more detail
-    stipple_mult = 8
 
     # convergence goal for the stipples, want centroid delta to be below it
     # most times after 50 iterations it seems to slow down a lot
     # Values tried 0.5, 1, 5, 10, 20, 50
     # 0.5 is to high and it takes forever
-    convergence = 0.5
+    convergence = 5
 
     # set up output folder
-    folder_base = "output_pika/"
+    folder_base = "output_color_shoe/"
     os.makedirs(folder_base)
 
     # load in imagage and get data for it
@@ -165,14 +164,14 @@ def main_voronoi(image):
 
         # increase resolution if little or no change
         # minimum convergence amount
-        min_change = 0.5
-        if centroid_delta + min_change >= last_centroid_delta:
-            resolution *= 2
-            convergence = resolution * convergence
-            print("Convergence has slowed, updating convergence")
-            print("New convergence is " + str(convergence))
-
-        last_centroid_delta = centroid_delta
+        # min_change = 0.5
+        # if centroid_delta + min_change >= last_centroid_delta:
+        #     resolution *= 2
+        #     convergence = resolution * convergence
+        #     print("Convergence has slowed, updating convergence")
+        #     print("New convergence is " + str(convergence))
+        #
+        # last_centroid_delta = centroid_delta
 
         if centroid_delta == 0.0:
             resolution *= 2
@@ -186,4 +185,7 @@ def main_voronoi(image):
 
     # Final print statement.
     print("Magnify image and draw points.")
-    return magnify_and_draw_points(zip(centroids[0], centroids[1]), width, height, stipple_mult)
+    if not color:
+        return magnify_and_draw_points(zip(centroids[0], centroids[1]), width, height, stipple_mult)
+    else:
+        return image
